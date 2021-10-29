@@ -1,8 +1,11 @@
-FROM docker.io/library/node:lts
+FROM docker.io/library/node:lts-slim
 
 RUN adduser --uid 10000 --disabled-password --system hedgedoc && \
     mkdir -p /var/lib/hedgedoc/db && \
-    chown -R hedgedoc /var/lib/hedgedoc
+    chown -R hedgedoc /var/lib/hedgedoc && \
+    apt-get -qq update && \
+    apt-get -qqy install --no-install-recommends ca-certificates wget git && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/hedgedoc
 USER hedgedoc
